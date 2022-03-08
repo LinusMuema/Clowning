@@ -2,9 +2,9 @@ package com.moose.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.moose.data.models.DataPost
+import com.moose.data.models.PostDetails
 
-@Database(entities = [DataPost::class], version = 1)
+@Database(entities = [PostDetails::class], version = 1)
 abstract class ClowningDatabase: RoomDatabase() {
 
     abstract fun postsDao(): PostsDao
