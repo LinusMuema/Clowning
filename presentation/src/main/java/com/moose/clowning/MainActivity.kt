@@ -23,6 +23,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val id = (1..10).random()
+        viewmodel.getSinglePost(id)
+
         setContent {
             ClowningTheme {
                 Surface(color = MaterialTheme.colors.background) {
