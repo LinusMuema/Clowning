@@ -1,15 +1,15 @@
 package com.moose.data.repositories
 
 import com.moose.data.local.PostsDao
-import com.moose.data.models.Post
+import com.moose.data.models.DataPost
 import com.moose.data.remote.PostEndpoints
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface PostRepository {
-    val posts: Flow<List<Post>>
+    val posts: Flow<List<DataPost>>
 
-    suspend fun getSinglePost(id: Int): Post
+    suspend fun getSinglePost(id: Int): DataPost
 }
 
 
@@ -18,10 +18,10 @@ class PostRepositoryImpl @Inject constructor(
     private val postsDao: PostsDao
 ): PostRepository {
 
-    override val posts: Flow<List<Post>>
+    override val posts: Flow<List<DataPost>>
         get() = postsDao.getPosts()
 
-    override suspend fun getSinglePost(id: Int): Post {
+    override suspend fun getSinglePost(id: Int): DataPost {
         val dbPost =  postsDao.getPostById(id)
         return if (dbPost != null) {
             dbPost

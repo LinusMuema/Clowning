@@ -1,7 +1,7 @@
 package com.moose.data
 
 import com.moose.data.local.PostsDao
-import com.moose.data.models.Post
+import com.moose.data.models.DataPost
 import com.moose.data.remote.PostEndpoints
 import com.moose.data.repositories.PostRepository
 import com.moose.data.repositories.PostRepositoryImpl
@@ -16,8 +16,8 @@ class PostRepositoryTest {
     lateinit var postEndpoints: PostEndpoints
     lateinit var postRepository: PostRepository
 
-    lateinit var dbPost: Post
-    lateinit var netPost: Post
+    lateinit var dbPost: DataPost
+    lateinit var netPost: DataPost
 
     @Before
     fun setup() {
@@ -27,8 +27,8 @@ class PostRepositoryTest {
         postRepository = PostRepositoryImpl(postEndpoints, postsDao)
 
         // mock the data
-        dbPost = Post(id = 1, title = "Db post")
-        netPost = Post(id = 1, title = "Net post")
+        dbPost = DataPost(id = 1, title = "Db post")
+        netPost = DataPost(id = 1, title = "Net post")
     }
 
     @Test

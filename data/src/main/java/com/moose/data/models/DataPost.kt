@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Entity(primaryKeys = ["id"])
-data class Post(
+data class DataPost(
     val id: Int,
     val userId: Int = 0,
     val body: String = "",
