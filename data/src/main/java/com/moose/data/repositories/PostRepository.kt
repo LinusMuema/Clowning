@@ -13,7 +13,11 @@ interface PostRepository {
 }
 
 
-class PostRepositoryImpl @Inject constructor(val api: PostEndpoints, val postsDao: PostsDao): PostRepository {
+class PostRepositoryImpl @Inject constructor(
+    private val api: PostEndpoints,
+    private val postsDao: PostsDao
+): PostRepository {
+
     override val posts: Flow<List<Post>>
         get() = postsDao.getPosts()
 

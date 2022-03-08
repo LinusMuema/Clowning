@@ -64,7 +64,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    fun `when post does not exist in db, then post from a network request is returned`() {
+    fun `when post does not exist in db, then post from a network request is returned and saved in the db`() {
         runBlocking {
 
             // Give the mock repository, and the posts is not in the database
@@ -77,6 +77,7 @@ class PostRepositoryTest {
 
             // Then...
             verify(postEndpoints, times(1)).getSinglePost(postId) // ...a network call is made
+            verify(postsDao, times(1)).insertPosts(netPost) // ...the post is saved in the db
             assert(result == netPost) // ...we should get the same post
         }
     }
