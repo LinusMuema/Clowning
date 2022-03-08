@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.plugin.serialization'
+
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -31,9 +33,15 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':data')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 
-    // serialization
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0'
+
+    // coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+
+    // hilt
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
 }
