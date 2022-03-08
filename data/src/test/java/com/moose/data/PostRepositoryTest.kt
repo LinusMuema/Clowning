@@ -48,7 +48,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    fun `when post exists in db, then getSinglePost returns it`() {
+    fun `when post exists in db, then the same post is returned`() {
         runBlocking {
             // Given the posts is in the database
             whenever(postsDao.getPostById(any())).thenReturn(dbPost)
@@ -57,10 +57,9 @@ class PostRepositoryTest {
             val postId = (0..10).random()
             val result = postRepository.getSinglePost(postId)
 
-            // Then we should get the same post
-            verify(postEndpoints, never()).getSinglePost(any())
-            verify(postsDao, times(1)).getPostById(postId)
-            assert(result == dbPost)
+            // Then...
+            verify(postEndpoints, never()).getSinglePost(any()) // ...no network call is made
+            assert(result == dbPost) // ...we should get the same post
         }
     }
 
@@ -76,9 +75,9 @@ class PostRepositoryTest {
             val postId = (0..10).random()
             val result = postRepository.getSinglePost(postId)
 
-            // Then we should get the same post
-            verify(postEndpoints, times(1)).getSinglePost(postId)
-            assert(result == netPost)
+            // Then...
+            verify(postEndpoints, times(1)).getSinglePost(postId) // ...a network call is made
+            assert(result == netPost) // ...we should get the same post
         }
     }
 }
