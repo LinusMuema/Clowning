@@ -6,9 +6,14 @@ import com.moose.data.models.toDomain
 import com.moose.data.remote.PostEndpoints
 import com.moose.domain.models.Post
 import com.moose.domain.repositories.PostRepository
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
 class PostRepositoryImpl @Inject constructor(
     private val api: PostEndpoints,
@@ -28,5 +33,4 @@ class PostRepositoryImpl @Inject constructor(
             netPost.toDomain()
         }
     }
-
 }
