@@ -2,9 +2,10 @@ package com.moose.data
 
 import com.moose.data.local.PostsDao
 import com.moose.data.models.DataPost
+import com.moose.data.models.toDomain
 import com.moose.data.remote.PostEndpoints
-import com.moose.data.repositories.PostRepository
 import com.moose.data.repositories.PostRepositoryImpl
+import com.moose.domain.repositories.PostRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -12,9 +13,9 @@ import org.mockito.kotlin.*
 import retrofit2.Response
 
 class PostRepositoryTest {
-    lateinit var postsDao: PostsDao
-    lateinit var postEndpoints: PostEndpoints
-    lateinit var postRepository: PostRepository
+    private lateinit var postsDao: PostsDao
+    private lateinit var postEndpoints: PostEndpoints
+    private lateinit var postRepository: PostRepository
 
     lateinit var dbPost: DataPost
     lateinit var netPost: DataPost
@@ -59,7 +60,7 @@ class PostRepositoryTest {
 
             // Then...
             verify(postEndpoints, never()).getSinglePost(any()) // ...no network call is made
-            assert(result == dbPost) // ...we should get the same post
+            assert(result == dbPost.toDomain()) // ...we should get the same post
         }
     }
 
@@ -78,7 +79,7 @@ class PostRepositoryTest {
             // Then...
             verify(postEndpoints, times(1)).getSinglePost(postId) // ...a network call is made
             verify(postsDao, times(1)).insertPosts(netPost) // ...the post is saved in the db
-            assert(result == netPost) // ...we should get the same post
+            assert(result == netPost.toDomain()) // ...we should get the same post
         }
     }
 }
