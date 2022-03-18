@@ -1,5 +1,6 @@
 package com.moose.clowning
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,20 +11,25 @@ import com.moose.domain.usecases.GetPostsUseCase
 import com.moose.domain.usecases.GetSinglePostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewmodel @Inject constructor(getPostsUseCase: GetPostsUseCase, private val getSinglePostUseCase: GetSinglePostUseCase): ViewModel() {
+class MainViewmodel @Inject constructor(private val getPostsUseCase: GetPostsUseCase): ViewModel() {
 
-    val posts: Flow<List<Post>> = getPostsUseCase.invoke()
+    init {
+        getPosts()
+    }
 
-    private val _post: MutableState<Post?> = mutableStateOf(null)
-    val post: State<Post?> = _post
+    private val _posts: MutableState<List<Post>> = mutableStateOf(listOf())
+    val posts: State<List<Post>> = _posts
 
-    fun getSinglePost(id: Int) {
+    private fun getPosts(){
         viewModelScope.launch {
-            _post.value = getSinglePostUseCase.invoke(id)
+            getPostsUseCase.invoke().collect {
+                _posts.value = it
+            }
         }
     }
 }

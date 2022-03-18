@@ -68,7 +68,7 @@ class PostRepositoryTest {
     fun `when post does not exist in db, then post from a network request is returned and saved in the db`() {
         runBlocking {
 
-            // Give the mock repository, and the posts is not in the database
+            // Given the post is not in the database
             whenever(postsDao.getPostById(any())).thenReturn(null)
             whenever(postEndpoints.getSinglePost(any())).thenReturn(Response.success(netPostDetails))
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetPostsUseCase @Inject constructor(private val postRepository: PostRepository) {
-    operator fun invoke(): Flow<List<Post>> {
-        return postRepository.posts
+    suspend operator fun invoke(): Flow<List<Post>> {
+        return postRepository.getPosts()
     }
 }
