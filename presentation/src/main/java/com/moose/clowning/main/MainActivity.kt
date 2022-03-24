@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
                         // move to the github screen
                         val intent = Intent(this, GithubActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }
@@ -92,5 +93,10 @@ class MainActivity : ComponentActivity() {
         // 3. start the auth flow
         val intent = service.getAuthorizationRequestIntent(request)
         launcher.launch(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        service.dispose()
     }
 }
