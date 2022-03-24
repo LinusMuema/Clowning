@@ -25,9 +25,7 @@ class GithubViewmodel @Inject constructor(private val getUserInfoUseCase: GetUse
     private fun getUser() {
         viewModelScope.launch {
             val user = getUserInfoUseCase.invoke()
-            Log.d("Github Auth", "getUser: user is $user")
             _user.value = user
         }
     }
-
 }

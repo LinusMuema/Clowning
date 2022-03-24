@@ -7,10 +7,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.moose.clowning.GITHUB_CLIENT_ID
@@ -22,8 +28,8 @@ import net.openid.appauth.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var service: AuthorizationService
     private val viewmodel: MainViewmodel by viewModels()
+    private lateinit var service: AuthorizationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,28 +52,25 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private val launcher = registerForActivityResult(StartActivityForResult()) {
+    private val launcher = registerForActivityResult(StartActivityForResult()){
         if (it.resultCode == RESULT_OK) {
             val ex = AuthorizationException.fromIntent(it.data!!)
-            val response = AuthorizationResponse.fromIntent(it.data!!)
+            val result = AuthorizationResponse.fromIntent(it.data!!)
 
-            if (ex != null) {
-                // handle the exception
-                Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+            if (ex != null){
+                Log.e("Github Auth", "launcher: $ex")
             } else {
-                // get the code and exchange it for the token
-                val client = ClientSecretBasic(GITHUB_CLIENT_SECRET)
-                val request = response!!.createTokenExchangeRequest()
-                service.performTokenRequest(request, client) { res, exception ->
-                    if (exception != null) {
-                        // handle the exception
-                        Toast.makeText(this, exception.message, Toast.LENGTH_LONG).show()
-                    } else {
-                        // get the token
-                        val token = res!!.accessToken!!
-                        viewmodel.setToken(token)
+                val secret = ClientSecretBasic(GITHUB_CLIENT_SECRET)
+                val tokenRequest = result?.createTokenExchangeRequest()
 
-                        // move to the github screen
+                service.performTokenRequest(tokenRequest!!, secret) {res, exception ->
+                    if (exception != null){
+                        Log.e("Github Auth", "launcher: ${exception.error}" )
+                    } else {
+                        val token = res?.accessToken
+                        viewmodel.setToken(token!!)
+
+                        // Move to Github screen
                         val intent = Intent(this, GithubActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -78,19 +81,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun githubAuth() {
-        // 1. configure the authorisation service
-        val auth = Uri.parse("https://github.com/login/oauth/authorize")
-        val token = Uri.parse("https://github.com/login/oauth/access_token")
-        val config = AuthorizationServiceConfiguration(auth, token)
+        val redirectUri = Uri.parse("clowning://moose.ac")
+        val authorizeUri = Uri.parse("https://github.com/login/oauth/authorize")
+        val tokenUri = Uri.parse("https://github.com/login/oauth/access_token")
 
-        // 2. create the request to obtain the code
-        val redirect = Uri.parse("clowning://moose.ac")
+        val config = AuthorizationServiceConfiguration(authorizeUri, tokenUri)
         val request = AuthorizationRequest
-            .Builder(config, GITHUB_CLIENT_ID, ResponseTypeValues.CODE, redirect)
-            .setScope("repo user")
+            .Builder(config, GITHUB_CLIENT_ID, ResponseTypeValues.CODE, redirectUri)
+            .setScopes("user repo admin")
             .build()
 
-        // 3. start the auth flow
         val intent = service.getAuthorizationRequestIntent(request)
         launcher.launch(intent)
     }
