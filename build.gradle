@@ -1,5 +1,6 @@
 buildscript {
     ext {
+        ktor_version = '1.6.8'
         room_version = '2.4.2'
         hilt_version = '2.40.5'
         kotlin_version = '1.6.10'

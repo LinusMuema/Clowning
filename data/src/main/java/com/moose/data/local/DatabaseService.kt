@@ -22,8 +22,4 @@ object DatabaseService {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideUserDao(appDatabase: ClowningDatabase) = appDatabase.postsDao()
-
 }
