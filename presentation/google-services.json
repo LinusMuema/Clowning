@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "40865980664",
+    "firebase_url": "https://frbse-auth-254.firebaseio.com",
+    "project_id": "frbse-auth-254",
+    "storage_bucket": "frbse-auth-254.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40865980664:android:58e7a2d5c84c09492e5b0d",
+        "android_client_info": {
+          "package_name": "com.dsc.myliving"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40865980664-r8kq7kj7cm6146b6gt7fi0ivf9sj8p14.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsc.myliving",
+            "certificate_hash": "199adad195f0e1498bc8ee0366123f456f24f48f"
+          }
+        },
+        {
+          "client_id": "40865980664-tjd4o770ctgnqgaps8an54al59m4u7g3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsc.myliving",
+            "certificate_hash": "c5b933603a97fca8277ac8715ea76b76882d0189"
+          }
+        },
+        {
+          "client_id": "40865980664-hempfv84d0vnsudcctf6up1t5svudmnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC911FmP4jQsOIBFd7IPwnnkDsyr0TtVYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40865980664-hempfv84d0vnsudcctf6up1t5svudmnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40865980664:android:9cdb65dc1fdbe8ee2e5b0d",
+        "android_client_info": {
+          "package_name": "com.moose.clowning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40865980664-gvii4c1m3pqgi074iagjpflgs65l0gao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moose.clowning",
+            "certificate_hash": "c5b933603a97fca8277ac8715ea76b76882d0189"
+          }
+        },
+        {
+          "client_id": "40865980664-hempfv84d0vnsudcctf6up1t5svudmnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC911FmP4jQsOIBFd7IPwnnkDsyr0TtVYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40865980664-hempfv84d0vnsudcctf6up1t5svudmnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

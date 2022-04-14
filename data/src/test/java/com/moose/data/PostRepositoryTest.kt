@@ -1,11 +1,7 @@
 package com.moose.data
 
-import com.moose.data.local.PostsDao
 import com.moose.data.models.PostDetails
 import com.moose.data.models.toDomain
-import com.moose.data.remote.PostEndpoints
-import com.moose.data.repositories.PostRepositoryImpl
-import com.moose.domain.repositories.PostRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
