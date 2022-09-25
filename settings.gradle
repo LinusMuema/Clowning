@@ -7,6 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Clowning"
-include ':presentation'
-include ':domain'
-include ':data'
+include ':app'
