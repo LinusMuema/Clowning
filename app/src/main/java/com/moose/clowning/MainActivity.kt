@@ -7,25 +7,16 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
-import com.dsc.form_builder.ChoiceState
-import com.dsc.form_builder.FormState
-import com.dsc.form_builder.Validators
 import com.moose.clowning.ui.theme.ClowningTheme
 
 
@@ -34,9 +25,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var screen by mutableStateOf(0)
+        val pages: List<String> = (1..5).map { "Page $it" }
+
         setContent {
             ClowningTheme {
-                CustomTabs(screen = 0)
+                CustomTabs(screen = screen, pages = pages, onClick = { screen = it })
             }
         }
     }
@@ -44,14 +38,15 @@ class MainActivity : ComponentActivity() {
     @Composable
     @Preview(showBackground = true)
     fun CustomTabsPreview() {
+        val pages: List<String> = (1..5).map { "Page $it" }
         ClowningTheme {
-            CustomTabs(screen = 2)
+            CustomTabs(screen = 2, pages = pages, onClick = {})
         }
     }
 
 
     @Composable
-    fun CustomTabs(screen: Int) {
+    fun CustomTabs(screen: Int, pages: List<String>, onClick: (Int) -> Unit) {
         var end by remember { mutableStateOf(Pair(0.0f, 0.0f)) }
         var start by remember { mutableStateOf(Pair(0.0f, 0.0f)) }
         val black = MaterialTheme.colors.onBackground
@@ -65,42 +60,35 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            pages.forEachIndexed { index, page ->
+                Column(
+                    modifier = Modifier.clickable { onClick(index) },
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
-                        text = "Page 1",
-                        fontWeight = if (screen == 0) FontWeight.Bold else FontWeight.Normal
+                        text = page,
+                        fontWeight = if (screen == index) FontWeight.Bold else FontWeight.Normal
                     )
-                    IndicatorBox(screen = screen, onPlaced = { start = it })
-                }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Page 2",
-                        fontWeight = if (screen == 1) FontWeight.Bold else FontWeight.Normal
+                    IndicatorBox(
+                        active = screen == index,
+                        onPlaced = {
+                            when (index) {
+                                0 -> start = it
+                                pages.lastIndex -> end = it
+                            }
+                        }
                     )
-                    Canvas(modifier = Modifier.padding(vertical = 12.dp)) {
-                        drawCircle(
-                            color = black, radius = if (screen == 1) 12f else 8f
-                        )
-                    }
-                }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Page 3",
-                        fontWeight = if (screen == 2) FontWeight.Bold else FontWeight.Normal
-                    )
-                    IndicatorBox(screen = screen, onPlaced = { end = it })
                 }
             }
         }
     }
 
     @Composable
-    fun IndicatorBox(screen: Int, onPlaced: (Pair<Float, Float>) -> Unit) {
+    fun IndicatorBox(active: Boolean, onPlaced: (Pair<Float, Float>) -> Unit) {
         val black = MaterialTheme.colors.onBackground
         Box(
             modifier = Modifier
@@ -109,7 +97,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Canvas(modifier = Modifier.fillMaxSize().padding(vertical = 12.dp)) {
                 drawCircle(
-                    color = black, radius = if (screen == 2) 12f else 8f
+                    color = black, radius = if (active) 12f else 8f
                 )
             }
         }
